@@ -284,11 +284,11 @@ static int ab8500_probe(struct udevice *dev)
 }
 
 U_BOOT_DRIVER(pmic_ab8500) = {
-	.name = "pmic_ab8500",
-	.id = UCLASS_PMIC,
-	.of_match = ab8500_ids,
-	.bind = dm_scan_fdt_dev,
-	.probe = ab8500_probe,
-	.ops = &ab8500_ops,
-	.priv_auto_alloc_size = sizeof(struct ab8500_priv),
+	.name		= "pmic_ab8500",
+	.id		= UCLASS_PMIC,
+	.of_match	= ab8500_ids,
+	.bind		= dm_scan_fdt_dev,
+	.probe		= ab8500_probe,
+	.ops		= &ab8500_ops,
+	.priv_auto	= sizeof(struct ab8500_priv),
 };
