@@ -372,7 +372,8 @@ struct dm_usb_ops musb_usb_ops = {
 #endif /* CONFIG_IS_ENABLED(DM_USB) */
 #endif /* CONFIG_USB_MUSB_HOST */
 
-#if defined(CONFIG_USB_MUSB_GADGET) && !CONFIG_IS_ENABLED(DM_USB_GADGET)
+#ifdef CONFIG_USB_MUSB_GADGET
+#if !CONFIG_IS_ENABLED(DM_USB_GADGET)
 static struct musb *gadget;
 
 int usb_gadget_handle_interrupts(int index)
@@ -422,7 +423,6 @@ int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 		driver->unbind(&gadget->g);
 	return 0;
 }
-#endif /* CONFIG_USB_MUSB_GADGET */
 
 struct musb *musb_register(struct musb_hdrc_platform_data *plat, void *bdata,
 			   void *ctl_regs)
@@ -452,3 +452,14 @@ struct musb *musb_register(struct musb_hdrc_platform_data *plat, void *bdata,
 
 	return *musbp;
 }
+#else /* !CONFIG_IS_ENABLED(DM_USB_GADGET) */
+int dm_usb_gadget_handle_interrupts(struct udevice *dev)
+{
+	struct musb_host_data *host = dev_get_priv(dev);
+
+	host->host->isr(0, host->host);
+
+	return 0;
+}
+#endif
+#endif /* CONFIG_USB_MUSB_GADGET */
