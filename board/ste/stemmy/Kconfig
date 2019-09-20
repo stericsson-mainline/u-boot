@@ -1,0 +1,21 @@
+if TARGET_STEMMY
+
+config SYS_BOARD
+	default "stemmy"
+
+config SYS_VENDOR
+	default "ste"
+
+config SYS_CONFIG_NAME
+	default "stemmy"
+
+config SYS_TEXT_BASE
+	default 0x100000
+
+config NR_DRAM_BANKS
+	default 1
+
+config DEFAULT_DEVICE_TREE
+	default "ste-samsung-stemmy"
+
+endif

@@ -1,0 +1,71 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
+/dts-v1/;
+
+#include "ste-dbx5x0-u-boot.dtsi"
+#include "ste-ab8500.dtsi"
+
+/ {
+	compatible = "samsung,stemmy", "st-ericsson,u8500";
+
+	/* This stablilizes the serial port enumeration */
+	aliases {
+		serial0 = &ux500_serial0;
+		serial1 = &ux500_serial1;
+		serial2 = &ux500_serial2;
+	};
+
+	chosen {
+		stdout-path = &ux500_serial2;
+	};
+
+	soc {
+		uart@80120000 {
+			status = "okay";
+
+			/* TODO
+			pinctrl-names = "default", "sleep";
+			pinctrl-0 = <&uart0_default_mode>;
+			pinctrl-1 = <&uart0_sleep_mode>;
+			*/
+		};
+
+		uart@80121000 {
+			status = "okay";
+
+			/* TODO
+			pinctrl-names = "default", "sleep";
+			pinctrl-0 = <&uart1_default_mode>;
+			pinctrl-1 = <&uart1_sleep_mode>;
+			*/
+		};
+
+		uart@80007000 {
+			status = "okay";
+
+			/* TODO
+			pinctrl-names = "default", "sleep";
+			pinctrl-0 = <&uart2_default_mode>;
+			pinctrl-1 = <&uart2_sleep_mode>;
+			*/
+		};
+
+		sdi2_per3@80005000 { // eMMC
+			status = "okay";
+
+			arm,primecell-periphid = <0x10480180>;
+		        max-frequency = <100000000>;
+			bus-width = <8>;
+			cap-mmc-highspeed;
+			/* TODO
+			vmmc-supply = <&ldo_1v8_reg>;
+			pinctrl-names = "default", "sleep";
+			pinctrl-0 = <&sdi2_default_mode>;
+			pinctrl-1 = <&sdi2_sleep_mode>;
+			*/
+		};
+
+		mcde@a0350000 {
+			status = "okay";
+		};
+	};
+};
