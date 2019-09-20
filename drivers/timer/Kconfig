@@ -127,6 +127,12 @@ config X86_TSC_TIMER_EARLY_FREQ
 	  hardware ways, nor got from device tree at the time when device
 	  tree is not available yet.
 
+config NOMADIK_MTU_TIMER
+	bool "Nomadik MTU Timer"
+	depends on TIMER
+	help
+	  Enables support for Nomadik Multi Timer Unit.
+
 config OMAP_TIMER
 	bool "Omap timer support"
 	depends on TIMER
