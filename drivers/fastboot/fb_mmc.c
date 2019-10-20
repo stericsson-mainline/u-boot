@@ -107,6 +107,7 @@ static int part_get_info_by_name_or_alias(struct blk_desc **dev_desc,
 	/* strlen("fastboot_partition_alias_") + PART_NAME_LEN + 1 */
 	char env_alias_name[25 + PART_NAME_LEN + 1];
 	char *aliased_part_name;
+	int ret;
 
 	/* check for alias */
 	strlcpy(env_alias_name, "fastboot_partition_alias_", sizeof(env_alias_name));
@@ -115,7 +116,22 @@ static int part_get_info_by_name_or_alias(struct blk_desc **dev_desc,
 	if (aliased_part_name)
 		name = aliased_part_name;
 
-	return do_get_part_info(dev_desc, name, info);
+	ret = do_get_part_info(dev_desc, name, info);
+	if (ret >= 0) {
+		/* strlen("fastboot_partition_offset_") + PART_NAME_LEN + 1 */
+		char env_offset_name[26 + PART_NAME_LEN + 1];
+		ulong offset;
+
+		/* check for offset */
+		strcpy(env_offset_name, "fastboot_partition_offset_");
+		strncat(env_offset_name, name, PART_NAME_LEN);
+		offset = env_get_hex(env_offset_name, 0);
+		if (offset) {
+			info->start += offset;
+			info->size -= offset;
+		}
+	}
+	return ret;
 }
 
 /**
